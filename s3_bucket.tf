@@ -57,7 +57,7 @@ resource "aws_s3_bucket" "alb_log" {
   bucket = "startups-note-alb-lob-bucket"
 
   lifecycle_rule {
-    enabled = true
+    enabled = true # Enable versioning
 
     expiration {
       days = "7" # TODO: 本格運用時は、法にのっとる

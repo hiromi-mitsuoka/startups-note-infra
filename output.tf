@@ -21,3 +21,11 @@ output "private_subnet_1a_id" {
 output "private_subnet_1c_id" {
   value = aws_subnet.private_1c.id
 }
+
+output "alb_dns_name" {
+  value = aws_lb.startups_note_alb.dns_name
+}
+
+output "domain_name" {
+  value = aws_route53_record.startups_note.name
+}

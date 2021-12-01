@@ -1,3 +1,10 @@
+variable "name" {}
+variable "vpc_id" {}
+variable "port" {}
+variable "cidr_blocks" {
+  type = list(string)
+}
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
 resource "aws_security_group" "default" {
   name = var.name
@@ -21,4 +28,8 @@ resource "aws_security_group_rule" "egress" {
   protocol = "-1" # all
   cidr_blocks = ["0.0.0.0/0"]
   security_group_id = aws_security_group.default.id
+}
+
+output "security_group_id" {
+  value = aws_security_group.default.id
 }
