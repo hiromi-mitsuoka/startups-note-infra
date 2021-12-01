@@ -24,3 +24,11 @@ module "http_redirect_sg" {
   port = 8080
   cidr_blocks = ["0.0.0.0/0"]
 }
+
+# module "inbound_traffic_sg" {
+#   source = "./modules/security_group"
+#   name = "inbound-traffic-sg"
+#   vpc_id = aws_vpc.main.id
+#   port = 5000
+#   cidr_blocks = ["0.0.0.0/0"]
+# }
