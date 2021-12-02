@@ -13,6 +13,31 @@ variable "aws_region" {
 
 variable "domain" {}
 
+variable "db_name" {
+  type        = string
+}
+
+variable "db_username" {
+  type        = string
+}
+
+variable "db_password" {
+  type        = string
+}
+
+variable "db_endpoint" {
+  type        = string
+}
+
+variable "db_rails_env" {
+  type        = string
+}
+
+variable "master_key" {
+  type        = string
+}
+
+
 
 # variable "db_name" {
 #   type = string

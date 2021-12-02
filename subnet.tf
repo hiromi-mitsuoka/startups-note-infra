@@ -1,7 +1,7 @@
 # public subnets
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet
 resource "aws_subnet" "public_1a" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet
   vpc_id = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
   map_public_ip_on_launch = true # このサブネットで起動したインスタンスにパブリックIPアドレスを自動割り当て
@@ -22,6 +22,7 @@ resource "aws_subnet" "public_1c" {
     Name = "startups-note-public-subent-1c"
   }
 }
+
 
 # private subnets
 

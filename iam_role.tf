@@ -1,14 +1,8 @@
-data "aws_iam_policy_document" "assume_role" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-    effect = "Allow"
-  }
+module "startups_note_describe_regions_for_ec2" {
+  source = "./modules/iam_role"
+  name = "startups-note-describe-regions-for-ec2"
+  identifier = "ec2.amazonaws.com"
+  policy = data.aws_iam_policy_document.allow_describe_regions.json
 }
 
 data "aws_iam_policy_document" "allow_describe_regions" {
@@ -19,45 +13,29 @@ data "aws_iam_policy_document" "allow_describe_regions" {
   }
 }
 
-resource "aws_iam_role" "startups_note_assume_role" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
-  name = "startups-note-describe-regions-for-ec2"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-  max_session_duration = 3600 # 1h
+
+# ECS
+
+module "startups_note_ecs_task_execution_role" {
+  source = "./modules/iam_role"
+  name = "startups-note-ecs-task-execution"
+  identifier = "ecs-tasks.amazonaws.com" # このIAMロールをECSで使用することを宣言
+  policy = data.aws_iam_policy_document.ecs_task_execution.json
 }
 
-resource "aws_iam_policy" "startups_note_policy" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
-  name = "startups-note-describe-regions-for-ec2"
-  policy = data.aws_iam_policy_document.allow_describe_regions.json
+# ECSタスク実行IAMロール
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  # AWSが管理するポリシー、CloudWatch Logs, ECRの操作権限を持つ
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "startups-note" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
-  role = aws_iam_role.startups_note_assume_role.name
-  policy_arn = aws_iam_policy.startups_note_policy.arn
+# ECSタスク実行IAMロールのポリシードキュメント定義
+data "aws_iam_policy_document" "ecs_task_execution" {
+  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy # 既存のポリシーを継承
+
+  statement {
+    effect = "Allow"
+    actions = ["ssm:GetParamters", "kms:Decrypt"]
+    resources = ["*"]
+  }
 }
-
-
-# data.aws_iam_policy_document.source_json_example.json will evaluate to:
-
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Sid": "",
-#       "Effect": "Allow",
-#       "Action": "ec2:*",
-#       "Resource": "*"
-#     },
-#     {
-#       "Sid": "SidToOverride",
-#       "Effect": "Allow",
-#       "Action": "s3:*",
-#       "Resource": [
-#         "arn:aws:s3:::somebucket/*",
-#         "arn:aws:s3:::somebucket"
-#       ]
-#     }
-#   ]
-# }
