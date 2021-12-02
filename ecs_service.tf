@@ -12,7 +12,7 @@ resource "aws_ecs_service" "startups_note" {
   # max: https://www.terraform.io/docs/language/functions/max.html
   task_definition = "${aws_ecs_task_definition.startups_note.family}:${max(aws_ecs_task_definition.startups_note.revision, data.aws_ecs_task_definition.startups_note.revision)}"
 
-  desired_count = 1 # 維持するタスク数 # TODO: nginx, appが2つずつで合っているか確認
+  desired_count = 2 # 維持するタスク数 # TODO: nginx, appが2つずつで合っているか確認
   deployment_minimum_healthy_percent = 100 # desired_countに対する最小タスク数（%）
   deployment_maximum_percent = 200 # desired_countに対する最大タスク数（%）
   launch_type = "FARGATE"

@@ -29,3 +29,7 @@ output "alb_dns_name" {
 output "domain_name" {
   value = aws_route53_record.startups_note.name
 }
+
+output "change_db_password" {
+  value = "aws rds modify-db-instance --db-instance-identifier 'startups' --master-user-password '〇〇'"
+}

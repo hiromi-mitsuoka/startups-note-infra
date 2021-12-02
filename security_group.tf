@@ -32,3 +32,19 @@ module "http_redirect_sg" {
 #   port = 5000
 #   cidr_blocks = ["0.0.0.0/0"]
 # }
+
+module "mysql_sg" {
+  source = "./modules/security_group"
+  name = "startups-note-mysql-sg"
+  vpc_id = aws_vpc.main.id
+  port = 3306
+  cidr_blocks = [aws_vpc.main.cidr_block]
+}
+
+module "es_sg" {
+  source = "./modules/security_group"
+  name = "startups-note-es-sg"
+  vpc_id = aws_vpc.main.id
+  port = 443
+  cidr_blocks = [aws_vpc.main.cidr_block]
+}

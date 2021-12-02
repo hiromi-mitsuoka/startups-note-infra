@@ -30,14 +30,63 @@ resource "aws_ecs_task_definition" "startups_note" {
           containerPort: 80
         }
       ],
-      workingDirectory: "/startups-note",
-      # volumesFrom: [
-      #   {
-      #     sourceContainer: "startups-note-app",
-      #     readOnly: false
-      #   }
-      # ],
+      workingDirectory: "/startups", # Gemfile, startupsディレクトリに合わせる
+      volumesFrom: [
+        {
+          sourceContainer: "startups-note-app",
+          readOnly: false
+        }
+      ],
       essential: true # タスク実行に必要かどうか
+    },
+    {
+      name: "startups-note-app"
+      image = "${aws_ecr_repository.startups_note_app.repository_url}:latest"
+      logConfiguration: {
+        logDriver: "awslogs",
+        options: {
+          awslogs-group: "/ecs/startups-note",
+          awslogs-region: "ap-northeast-1",
+          awslogs-stream-prefix: "app"
+        }
+      },
+      environment: [
+        {
+          name: "DATABASE_HOST",
+          value: var.db_endpoint
+        },
+        {
+          name: "DATABASE_NAME",
+          value: var.db_name
+        },
+        {
+          name: "DATABASE_PASSWORD",
+          value: var.db_password
+        },
+        {
+          name: "DATABASE_USERNAME",
+          value: var.db_username
+        },
+        {
+          name: "RAILS_ENV",
+          value: var.db_rails_env
+        },
+        {
+          name: "RAILS_MASTER_KEY",
+          value: var.master_key
+        },
+        {
+          name: "TZ",
+          value: "Japan"
+        }
+      ],
+      command: [
+        "bash",
+        "-c",
+        "bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails assets:precompile && bundle exec puma -C config/puma.rb"
+      ],
+      workingDirectory: "/startups",  # Gemfile, startupsディレクトリに合わせる
+      essential: true
     }
   ])
 }
