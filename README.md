@@ -3,8 +3,9 @@
 ## 初回セットアップ手順
 
 1. ECS（service, task_definition）はコメントアウトし、ECR までを APPLY する
+
 2. DB の password 変更
-   **"aws rds modify-db-instance --db-instance-identifier 'startups-note' --master-user-password '〇〇'"**
+   **"aws rds modify-db-instance --db-instance-identifier 'startups' --master-user-password '〇〇'"**
 3. ECR に docker イメージを push
 
 ```
@@ -20,7 +21,7 @@ docker push <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/startups-no
 # app
 pwd => startups-note/startups
 # 他のdockerは止める
-docker build -f ../infra/Dockerfile . -t startups-note-app
+docker build -f ../infra/Dockerfile . -t startups-note-app (--no-cache)
 docker tag startups-note-app:latest <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/startups-note-app:latest
 docker push <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/startups-note-app:latest
 ```
