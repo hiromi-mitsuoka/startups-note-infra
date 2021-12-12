@@ -28,7 +28,7 @@ resource "aws_ecs_service" "startups_note" {
 
     security_groups = [
       module.http_sg.security_group_id,
-      module.https_sg.security_group_id
+      module.https_sg.security_group_id # esも443
       # module.inbound_traffic_sg.security_group_id
       # Note: module.db_sg.security_group_id は必要かどうか
     ]

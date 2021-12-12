@@ -13,6 +13,11 @@ variable "aws_region" {
 
 variable "domain" {}
 
+variable "account_id" {
+  type = string
+}
+
+
 variable "db_name" {
   type        = string
 }
