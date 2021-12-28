@@ -11,6 +11,8 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
 }
 
 
+# NOTE: Not move
+
 # Elasticsearch
 
 # resource "aws_cloudwatch_log_group" "for_es" {

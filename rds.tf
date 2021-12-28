@@ -52,7 +52,8 @@ resource "aws_db_instance" "startups_note" {
   # kms_key_id = aws_kms_key.startups.arn
 
   username = var.db_username
-  password = "dummypassword"
+  # password = "dummypassword"
+  password = var.db_password # TODO: 管理方法変える
   multi_az = true
   publicly_accessible = false # VPC外からのアクセスを遮断
   backup_window = "09:10-09:40" # 毎日のバックアップのタイミング設定、UTC
