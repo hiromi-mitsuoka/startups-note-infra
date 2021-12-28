@@ -1,0 +1,4 @@
+# Ignore because can't push to ecr.
+node_modules/
+.next/
+dist/

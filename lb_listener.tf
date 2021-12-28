@@ -1,3 +1,5 @@
+# TODO: Change only https, redirect-to-https, not using http.
+
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.startups_note_alb.arn

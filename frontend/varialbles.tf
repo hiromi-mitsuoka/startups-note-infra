@@ -1,0 +1,21 @@
+variable "aws_access_key" {
+  type = string
+}
+
+variable "aws_secret_key" {
+  type = string
+}
+
+variable "aws_region" {
+  type = string
+  default = "ap-northeast-1"
+}
+
+variable "domain" {}
+
+variable "vpc_id" {}
+variable "public_subnet_1a_id" {}
+variable "public_subnet_1c_id" {}
+variable "private_subnet_1a_id" {}
+variable "private_subnet_1c_id" {}
+

@@ -1,7 +1,7 @@
 # private bucket
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 resource "aws_s3_bucket" "private" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
   bucket = "startups-note-private-bucket" # 一意
 
   # https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
@@ -67,8 +67,8 @@ resource "aws_s3_bucket" "alb_log" {
   force_destroy = true # TODO: 本格運用時はfalse
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy
 resource "aws_s3_bucket_policy" "alb_log" {
-  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy
   bucket = aws_s3_bucket.alb_log.id
   policy = data.aws_iam_policy_document.alb_log.json
 }
