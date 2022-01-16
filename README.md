@@ -4,11 +4,13 @@
 
 1. `aws configure list`で profile 確認
 
-2. ECS（service, task_definition）はコメントアウトし、ECR までを APPLY する
+2. ECS（service, task_definition(nginx, rails のみ)）はコメントアウトし、ECR までを APPLY する
 
 3. DB の password 変更
    **"aws rds modify-db-instance --db-instance-identifier 'startups' --master-user-password '〇〇'"**
 4. ECR に docker イメージを push
+
+5. コメントアウトを外して、APPLY
 
 ```
 # ログイン
@@ -35,6 +37,9 @@ docker push <アカウントID>.dkr.ecr.ap-northeast-1.amazonaws.com/startups-no
 ```
 # ECS
 aws logs filter-log-events --log-group-name /ecs/startups-note
+
+## ECS Scheduled Tasks
+aws logs filter-log-events --log-group-name /ecs-scheduled-tasks/rss-batch
 ```
 
 ## メモ
