@@ -90,3 +90,39 @@ resource "aws_ecs_task_definition" "startups_note" {
     }
   ])
 }
+
+
+# Not comment out to deploy. (on cloud_watch.tf line 48, in resource "aws_cloudwatch_event_target" "rss_batch":)
+# ECS Scheduled Tasks (RSS)
+resource "aws_ecs_task_definition" "rss_batch" {
+  family = "startups-note-rss-batch"
+  cpu = "256"
+  memory = "512"
+  network_mode = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+
+  # Use the iam_role created earlier.
+  execution_role_arn = module.startups_note_ecs_task_execution_role.iam_role_arn
+
+  # the image is alpine
+  container_definitions = jsonencode([
+    {
+      name = "alpine"
+      image = "alpine:latest"
+      essential: true
+      logConfiguration: {
+        logDriver: "awslogs"
+        options: {
+          awslogs-group: "/ecs-scheduled-tasks/rss-batch",
+          awslogs-region: "ap-northeast-1",
+          awslogs-stream-prefix: "rss-batch"
+        }
+      },
+      command: [
+        "bash",
+        "-c",
+        "bundle exec rake article:get_articles_count_used_categories"
+      ],
+    }
+  ])
+}

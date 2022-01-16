@@ -39,3 +39,18 @@ data "aws_iam_policy_document" "ecs_task_execution" {
     resources = ["*"]
   }
 }
+
+# ECS Scheduled Tasks
+module "startups_note_ecs_rss_batch_role" {
+  source = "./modules/iam_role"
+  name = "startups-note-ecs-rss-batch"
+
+  # Use AmazonEC2ContainerServiceEventsRole
+  identifier = "events.amazonaws.com"
+  policy = data.aws_iam_policy.ecs_events_role_policy.policy
+}
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy
+data "aws_iam_policy" "ecs_events_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
+}
