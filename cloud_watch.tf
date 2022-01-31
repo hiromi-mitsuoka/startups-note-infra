@@ -28,8 +28,8 @@ resource "aws_cloudwatch_event_rule" "rss_batch" {
 
   # schedule_expression = "rate(10 minutes)" # For test
 
-  # AM 6:00 JST
-  schedule_expression = "cron(0 21 * * ? *)"
+  # 16:00, 6:00 JST
+  schedule_expression = "cron(0 7,21 * * ? *)"
 }
 
 # Define the job to be executed.
